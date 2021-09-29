@@ -27,6 +27,45 @@ function makeGETRequest(url, callback) {
   promise().then(resolve());
 }
 
+class Item {
+  constructor(good) {
+    this.good = good;
+    this.count = 1;
+  }
+  addOne() {
+    this.count ++;
+  }
+  removeOne() {
+    this.count --;
+  }
+  render(){
+    return `<div class="basket-item"><h3>name: ${this.product_name} 
+    price: ${this.price}  count: ${this.count}</h3></div>`;
+  }
+}
+
+class Basket {
+  constructor(){
+    this.itemsList = [];
+    this.basketPrice = 0;
+  }
+  addItem(item) {
+    this.itemsList.push(item);
+  }
+  removeItem(item){
+    this.itemsList.pop(this.itemsList.indexOf(item));
+  }
+
+  render() { 
+    let basketHtml = '';
+    this.itemsList.forEach(element => {
+      const item = new Item(element);
+      basketHtml += item.render();
+    });
+    document.querySelector('.basket-list').innerHTML = listHtml;
+  }
+}
+
 class GoodsItem {
   constructor (product_name, price) {
     this.product_name = product_name;
@@ -36,9 +75,6 @@ class GoodsItem {
     return `<div class="goods-item"><h3>${this.product_name}</h3><p>${this.price}</p></div>`;
   }
 }
-
-
-
 
 
 // Переделайте GoodsList так, чтобы fetchGoods() возвращал промис, 
@@ -69,3 +105,5 @@ class GoodsList {
 }
 
 let list = new GoodsList();
+
+
