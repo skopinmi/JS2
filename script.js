@@ -1,73 +1,30 @@
-const API_URL = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
+'use strict'
 
 function makeGETRequest(url, callback) {
-  let xhr;
+  var xhr;
 
-  const promise = () => {
-    return new Promise((resolve) => {
-      if (window.XMLHttpRequest) {
-        xhr = new XMLHttpRequest();
-      } else if (window.ActiveXObject) { 
-        xhr = new ActiveXObject("Microsoft.XMLHTTP");
-      }  
-    });
+  if (window.XMLHttpRequest) {
+    xhr = new XMLHttpRequest();
+  } else if (window.ActiveXObject) { 
+    xhr = new ActiveXObject("Microsoft.XMLHTTP");
   }
 
-  function resolve() {
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4) {
-        callback(xhr.responseText);
-      }
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+      callback(xhr.responseText);
     }
-  
-    xhr.open('GET', url, true);
-    xhr.send();
   }
 
-  promise().then(resolve());
+  xhr.open('GET', url, true);
+  xhr.send();
 }
 
-class Item {
-  constructor(good) {
-    this.good = good;
-    this.count = 1;
-  }
-  addOne() {
-    this.count ++;
-  }
-  removeOne() {
-    this.count --;
-  }
-  render(){
-    return `<div class="basket-item"><h3>name: ${this.product_name} 
-    price: ${this.price}  count: ${this.count}</h3></div>`;
-  }
-}
+const API_URL = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
 
-class Basket {
-  constructor(){
-    this.itemsList = [];
-    this.basketPrice = 0;
-  }
-  addItem(item) {
-    this.itemsList.push(item);
-  }
-  removeItem(item){
-    this.itemsList.pop(this.itemsList.indexOf(item));
-  }
 
-  render() { 
-    let basketHtml = '';
-    this.itemsList.forEach(element => {
-      const item = new Item(element);
-      basketHtml += item.render();
-    });
-    document.querySelector('.basket-list').innerHTML = listHtml;
-  }
-}
 
 class GoodsItem {
-  constructor (product_name, price) {
+  constructor (product_name, price){
     this.product_name = product_name;
     this.price = price;
   }
@@ -75,35 +32,52 @@ class GoodsItem {
     return `<div class="goods-item"><h3>${this.product_name}</h3><p>${this.price}</p></div>`;
   }
 }
-
-
-// Переделайте GoodsList так, чтобы fetchGoods() возвращал промис, 
-// а render() вызывался в обработчике этого промиса.
-// 
-// вроде соответствует заданию, работает, но чувство, что что-то не так...
-class GoodsList {
-  constructor(){
-    this.fetchGoods().then((goods) => {this.render(goods);}, (error) => {console.log('something wrong');});
-  }
   
-  fetchGoods() {
-    return new Promise((resolve) => {
-      makeGETRequest(`${API_URL}/catalogData.json`, (goods) => {
-      resolve(JSON.parse(goods));
-      })    
-    });
+class GoodsList {
+  
+  constructor() {
+    this.goods = [];
+    this.filteredGoods = [];
   }
-  render(goods) {
+  fetchGoods(cb) {
+    makeGETRequest(`${API_URL}/catalogData.json`, (goods) => {
+      this.goods = JSON.parse(goods);
+      this.filteredGoods = JSON.parse(goods);
+      cb();
+    })
+  }
+
+  render() {
     let listHtml = '';
-    goods.forEach(good => {
+    this.filteredGoods.forEach(good => {
       const goodItem = new GoodsItem(good.product_name, good.price);
       listHtml += goodItem.render();
     });
     document.querySelector('.goods-list').innerHTML = listHtml;
   }
 
+  filterGoods(value) {
+    const regexp = new RegExp(value, 'i');
+    this.filteredGoods = this.goods.filter(good => regexp.test(good.product_name));
+    this.render();
+  }
 }
 
-let list = new GoodsList();
+
+const list = new GoodsList();
+let searchButton = document.querySelector('.search-button');
+let searchInput = document.querySelector('.goods-search');
+
+
+list.fetchGoods(() => {
+  list.render();
+});
+searchButton.addEventListener('click', (e) => {
+  const value = searchInput.value;
+  list.filterGoods(value);
+});
+
+
+
 
 
