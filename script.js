@@ -1,4 +1,6 @@
 'use strict'
+const goodsList = document.querySelector('.goods-list');
+const API_URL = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
 
 function makeGETRequest(url, callback) {
   var xhr;
@@ -19,17 +21,14 @@ function makeGETRequest(url, callback) {
   xhr.send();
 }
 
-const API_URL = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
-
-
-
 class GoodsItem {
   constructor (good){
     this.product_name = good.product_name;
     this.price = good.price;
   }
   render() {
-    return `<div class="goods-item"><h3>${this.product_name}</h3><p>${this.price}</p><button id ="addToCart" data-product="${this.product_name}" >Add to Cart</button></div>`;
+    return `<div class="goods-item"><h3>${this.product_name}</h3><p>${this.price}</p>
+    <button id ="addToCart" data-product-name="${this.product_name}" data-product-price="${this.price}" >Add to Cart</button></div>`;
   }
 }
   
@@ -71,13 +70,14 @@ let searchInput = document.querySelector('.goods-search');
 
 list.fetchGoods(() => {
   list.render();
+  activateAddToCart(); // вставил сюда, иначе выполнялось до создания HTML карточек товара 
 });
+
 searchButton.addEventListener('click', (e) => {
   const value = searchInput.value;
   list.filterGoods(value);
+  activateAddToCart(); // вставил сюда, иначе выполнялось до создания HTML карточек товара 
 });
-
-
 
 
 
