@@ -24,12 +24,12 @@ const API_URL = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-sto
 
 
 class GoodsItem {
-  constructor (product_name, price){
-    this.product_name = product_name;
-    this.price = price;
+  constructor (good){
+    this.product_name = good.product_name;
+    this.price = good.price;
   }
   render() {
-    return `<div class="goods-item"><h3>${this.product_name}</h3><p>${this.price}</p></div>`;
+    return `<div class="goods-item"><h3>${this.product_name}</h3><p>${this.price}</p><button id ="addToCart" data-product="${this.product_name}" >Add to Cart</button></div>`;
   }
 }
   
@@ -50,7 +50,7 @@ class GoodsList {
   render() {
     let listHtml = '';
     this.filteredGoods.forEach(good => {
-      const goodItem = new GoodsItem(good.product_name, good.price);
+      const goodItem = new GoodsItem(good);
       listHtml += goodItem.render();
     });
     document.querySelector('.goods-list').innerHTML = listHtml;
@@ -78,6 +78,16 @@ searchButton.addEventListener('click', (e) => {
 });
 
 
+
+
+
+// *Создать форму обратной связи с полями: Имя, Телефон, E-mail, текст, кнопка Отправить. 
+// При нажатии на кнопку Отправить произвести валидацию полей следующим образом:
+// a. Имя содержит только буквы.
+// b. Телефон имеет вид +7(000)000-0000.
+// c. E-mail имеет вид mymail@mail.ru, или my.mail@mail.ru, или my-mail@mail.ru.
+// d. Текст произвольный.
+// e. Если одно из полей не прошло валидацию, необходимо выделить это поле красной рамкой и сообщить пользователю об ошибке.
 
 
 
