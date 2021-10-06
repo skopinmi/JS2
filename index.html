@@ -8,16 +8,41 @@
   <div id="vue">
     <header>
       <input type="text" class="goods-search" v-model="searchLine"/>
-      <button class="search-button" type="button" v-on:click="filterGoods() ">Искать</button>    
-      <button class="cart-button" type="button">Корзина</button>
-      <div class="basket"></div>
+      <button class="search-button" type="button" v-on:click="filterGoods">Искать</button>    
+      <button class="cart-button" type="button" >Корзина</button>
+      <div class="basket" >
+        <table>
+          <thead>
+            <tr>
+              <th>Название товара</th>
+              <th>Количество</th>
+              <th>Цена за шт.</th>
+              <th>Итого</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in basket">
+              <td>{{item.product.good.product_name}}</td>
+              <td>{{item.count}}</td>
+              <td>{{item.product.good.price}}</td>
+              <td>Общая цена</td></tr>`;
+            </tr>
+          </tbody>
+        </table>
+        <table class="totalprice">
+          <tr>
+              <th>Товаров в корзине на сумму:</th>
+              <th id="total">{{totalPrice}}</th>
+          </tr>
+        </table>
+      </div>
     </header>
     <main>
       <div class="goods-list">
         <div class="goods-item" v-for="good in filteredGoods">
           <h3>{{ good.product_name }}</h3>
           <p>{{ good.price }}</p>
-          <button id ="addToCart" data-product="{'1': '${this.product_name}', '2': ${this.price}" >Add to Cart</button></div>
+          <button id ="addToCart" v-on:click="addToBasket(good)" >Add to Cart</button></div>
         </div>
       </div>
       <!-- <div class="form-submit">

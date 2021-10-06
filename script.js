@@ -4,9 +4,12 @@ const API_URL = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-sto
 const app = new Vue({
   el: '#vue',
   data: {
+
     goods: [],
     filteredGoods: [],
-    searchLine: ''
+    searchLine: '',
+    basket: [],
+    totalPrice: 0,
   },
   methods: {
     makeGETRequest(url, callback) {
@@ -30,13 +33,20 @@ const app = new Vue({
     filterGoods() {
       const regexp = new RegExp(this.searchLine, 'i');
       this.filteredGoods = this.goods.filter(good => regexp.test(good.product_name));
+    },
+    addToBasket(good) {
+      if (!(good.id_product in this.basket)){
+          this.basket[good.id_product] = {product: good, count: 1};
+      }else {
+          this.basket[good.id_product].count += 1;
+      }
+      console.log(this.basket);
     }
   },
   mounted() {
     this.makeGETRequest(`${API_URL}/catalogData.json`, (goods) => {
       this.goods = JSON.parse(goods);
       this.filteredGoods = JSON.parse(goods);
-      console.log(goods);
     });
   }
 });
