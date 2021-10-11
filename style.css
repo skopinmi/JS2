@@ -1,0 +1,25 @@
+.cart-button {
+    color: rgb(20, 107, 238);
+    position: absolute;
+    right: 10px;
+}
+.goods-list {
+    padding-top: 50px;
+}
+.goods-item {
+    padding: 10px;
+    background:#a5f0f0;
+    width: 100px;
+    height: 100px; 
+    text-align: center;
+    margin: 2px;
+    float: left;
+}
+.basket {
+    display: none;
+    background-color: honeydew;
+    position: absolute;
+    right: 0;
+    top: 75px;
+}
+

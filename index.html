@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>eShop</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="vue">
+    <header>
+      <goods-search :goods="filteredGoods"></goods-search>
+
+      <!-- <button class="cart-button" type="button" >Корзина</button>
+      <div class="basket" >
+        <table>
+          <thead>
+            <tr>
+              <th>Название товара</th>
+              <th>Количество</th>
+              <th>Цена за шт.</th>
+              <th>Итого</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in basket">
+              <td>{{item.product.good.product_name}}</td>
+              <td>{{item.count}}</td>
+              <td>{{item.product.good.price}}</td>
+              <td>Общая цена</td></tr>`;
+            </tr>
+          </tbody>
+        </table>
+        <table class="totalprice">
+          <tr>
+              <th>Товаров в корзине на сумму:</th>
+              <th id="total">{{totalPrice}}</th>
+          </tr>
+        </table>
+      </div> -->
+    </header>
+    <main>
+      <goods-list :goods="filteredGoods"></goods-list>
+    </main>
+
+  </div>  
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="script.js"></script>
+  <!-- <script src="basket.js"></script> -->
+</body>
+</html>
