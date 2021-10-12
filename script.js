@@ -84,13 +84,39 @@ Vue.component('goods-search', {
 Vue.component('cart', {
   data() {
     return {
-      totalPrice: 'не работает'
+      totalPrice: 'не работает',
+      isVisible: false
     }
   },
   template: `
     <div class="cart">
-      <button class="cart-button" type="button" >Корзина</button>
-      
+      <button class="cart-button" type="button" @mouseover="isVisible = true" @mouseleave="isVisible = false">Корзина</button>
+      <div  v-show="isVisible">
+        <table>
+          <thead>
+            <tr>
+              <th>Название товара</th>
+              <th>Количество</th>
+              <th>Цена за шт.</th>
+              <th>Итого</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in $root.goodsInCart">
+              <td>{{item}}</td>
+              <td>{{item}}</td>
+              <td>{{item}}</td>
+              <td>Общая цена</td></tr>
+            </tr>
+          </tbody>
+        </table>
+        <table class="totalprice">
+          <tr>
+              <th>Товаров в корзине на сумму:</th>
+              <th id="total">{{totalPrice}}</th>
+          </tr>
+        </table>
+      </div>
     </div>  
   `
 });
