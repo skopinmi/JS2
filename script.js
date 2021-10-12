@@ -46,10 +46,19 @@ const app = new Vue({
   }
 });
 
+Vue.component('header-component', {
+  template: `
+    <div class="header-component"> 
+      <goods-search></goods-search>
+      <cart></cart>
+    </div>
+  `
+});
+
 Vue.component('goods-search', {
   props: ['goods'],
   template: `
-    <div> 
+    <div class="search">
       <input type="text" class="goods-search" v-model="searchLine"/>
       <button class="search-button" type="button" v-on:click=filterGoods()>Искать</button>  
     </div>`,
@@ -61,10 +70,18 @@ Vue.component('goods-search', {
   methods: {
     filterGoods() {
       const regexp = new RegExp(this.searchLine, 'i');
-      console.log(this.searchLine);
       this.$root.filteredGoods = this.$root.goods.filter(good => regexp.test(good.product_name));
     }
   } 
+});
+
+Vue.component('cart', {
+  props: [],
+  template: `
+    <div class="cart">
+      <button class="cart-button" type="button" >Корзина</button>
+    </div>  
+  `
 });
 
 Vue.component('goods-list', {

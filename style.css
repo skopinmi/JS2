@@ -1,7 +1,13 @@
+.car {
+    float: left;
+}
+.search {
+    float: left; 
+}
 .cart-button {
     color: rgb(20, 107, 238);
-    position: absolute;
-    right: 10px;
+    position: absolute; 
+    right: 10px; 
 }
 .goods-list {
     padding-top: 50px;
@@ -15,11 +21,14 @@
     margin: 2px;
     float: left;
 }
-.basket {
+/* .cart {
     display: none;
     background-color: honeydew;
     position: absolute;
     right: 0;
     top: 75px;
+} */
+.header-component {
+    overflow: hidden;
 }
 

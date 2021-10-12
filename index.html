@@ -6,8 +6,8 @@
 </head>
 <body>
   <div id="vue">
-    <header>
-      <goods-search :goods="filteredGoods"></goods-search>
+    <header-component> </header-component>
+      <!-- <goods-search :goods="filteredGoods"></goods-search> -->
 
       <!-- <button class="cart-button" type="button" >Корзина</button>
       <div class="basket" >
@@ -36,7 +36,6 @@
           </tr>
         </table>
       </div> -->
-    </header>
     <main>
       <goods-list :goods="filteredGoods"></goods-list>
     </main>
