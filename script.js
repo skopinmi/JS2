@@ -62,7 +62,7 @@ Vue.component('goods-search', {
     filterGoods() {
       const regexp = new RegExp(this.searchLine, 'i');
       console.log(this.searchLine);
-      this.filteredGoods = this.goods.filter(good => regexp.test(good.product_name));
+      this.$root.filteredGoods = this.$root.goods.filter(good => regexp.test(good.product_name));
     }
   } 
 });
