@@ -6,7 +6,7 @@ const app = new Vue({
   data: {
     goods: [],
     filteredGoods: [],
-    basket: [],
+    goodsInCart: [],
     totalPrice: 0,
   },
   methods: {
@@ -28,16 +28,17 @@ const app = new Vue({
       xhr.open('GET', url, true);
       xhr.send();
       }
-    )},  
-    addToBasket(good) {
-      if (!(good.id_product in this.basket)){
-          this.basket[good.id_product] = {product: good, count: 1};
+    )},
+    addToCart(good) {
+      if (!(good.id_product in this.goodsInCart)){
+        this.goodsInCart[good.id_product] = {product: good, count: 1};
       }else {
-          this.basket[good.id_product].count += 1;
+        this.goodsInCart[good.id_product].count += 1;
       }
-      console.log(this.basket);
-    }
+      console.log(this.goodsInCart);
+    },
   },
+
   mounted() {
     this.makeGETRequest(`${API_URL}/catalogData.json`).then( (goods) => {
       this.goods = JSON.parse(goods);
@@ -57,6 +58,11 @@ Vue.component('header-component', {
 
 Vue.component('goods-search', {
   props: ['goods'],
+  date() {
+    return {
+      searchLine: ''
+    }
+  },
   template: `
     <div class="search">
       <input type="text" class="goods-search" v-model="searchLine"/>
@@ -76,10 +82,15 @@ Vue.component('goods-search', {
 });
 
 Vue.component('cart', {
-  props: [],
+  data() {
+    return {
+      totalPrice: 'не работает'
+    }
+  },
   template: `
     <div class="cart">
       <button class="cart-button" type="button" >Корзина</button>
+      
     </div>  
   `
 });
@@ -99,7 +110,7 @@ Vue.component('goods-item', {
     <div class="goods-item">
       <h3>{{ good.product_name }}</h3>
       <p>{{ good.price }}</p>
-      <button id ="addToCart" v-on:click="this.addToBasket(good)" >Add to Cart</button></div>
+      <button id ="addToCart" v-on:click="$root.addToCart(good)" >Add to Cart</button></div>
     </div>
   `
 });
