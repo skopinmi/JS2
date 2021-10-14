@@ -1,5 +1,6 @@
 'use strict'
-const API_URL = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
+const API_URL = 'http://localhost:3000';
+// 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
         
 const app = new Vue({
   el: '#vue',
@@ -40,7 +41,7 @@ const app = new Vue({
   },
 
   mounted() {
-    this.makeGETRequest(`${API_URL}/catalogData.json`).then( (goods) => {
+    this.makeGETRequest(`${API_URL}/catalog`).then( (goods) => {
       this.goods = JSON.parse(goods);
       this.filteredGoods = JSON.parse(goods);
     });
