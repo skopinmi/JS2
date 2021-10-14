@@ -12,6 +12,12 @@ app.get('/catalog', (req, res) => {
   });
 });
 
+app.get('/cart', (req, res) => {
+    fs.readFile('cart.json', 'utf8', (err, data) => {
+      res.send(data);
+    });
+  });
+
 app.post('/addToCart', (req, res) => {
     fs.readFile('cart.json', 'utf8', (err, data) => {
       if (err) {

@@ -45,9 +45,15 @@ const app = new Vue({
     addToCart(good) {
       const item = {product: good, count: 1};
       postResponse('/addToCart', item).then((result) => {
-        console.log(result);
+        console.log(this.goodsInCart);
       });
+      this.upDateCart()
     },
+    upDateCart(){
+      this.makeGETRequest(`${API_URL}/cart`).then( (goods) => {
+        this.goodsInCart = JSON.parse(goods);
+      });
+    }
   },
 
   mounted() {
@@ -114,10 +120,10 @@ Vue.component('cart', {
           </thead>
           <tbody>
             <tr v-for="item in $root.goodsInCart">
-              <td>{{item}}</td>
-              <td>{{item}}</td>
-              <td>{{item}}</td>
-              <td>Общая цена</td></tr>
+              <td>{{item.product.product_name}}</td>
+              <td>{{item.count}}</td>
+              <td>{{item.product.price}}</td>
+              <td>{{item.count * item.product.price}}</td></tr>
             </tr>
           </tbody>
         </table>
@@ -129,14 +135,7 @@ Vue.component('cart', {
         </table>
       </div>
     </div>  
-  `,
-  methods: {
-    upDateCart(){
-      this.makeGETRequest(`${API_URL}/cart`).then( (goods) => {
-        this.goodsInCart = JSON.parse(goods);
-      });
-    }
-  }
+  `
 });
 
 Vue.component('goods-list', {
