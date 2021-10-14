@@ -1,4 +1,7 @@
 'use strict'
+
+// const { resolve } = require("path/posix");
+
 const API_URL = 'http://localhost:3000';
 // 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
         
@@ -30,13 +33,34 @@ const app = new Vue({
       xhr.send();
       }
     )},
-    addToCart(good) {
-      if (!(good.id_product in this.goodsInCart)){
-        this.goodsInCart[good.id_product] = {product: good, count: 1};
-      }else {
-        this.goodsInCart[good.id_product].count += 1;
+    makePOSTRequest(url, data) {
+      new Promise ((resolve) => {
+        let xhr;
+  
+      if (window.XMLHttpRequest) {
+        xhr = new XMLHttpRequest();
+      } else if (window.ActiveXObject) { 
+        xhr = new ActiveXObject("Microsoft.XMLHTTP");
       }
-      console.log(this.goodsInCart);
+  
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+          resolve(xhr.responseText);
+        }
+      }
+  
+      xhr.open('POST', url, true);
+      xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+  
+      xhr.send(data);
+      });
+    },
+
+    addToCart(good) {
+      this.makePOSTRequest(`${API_URL}/addToCart`, good);
+      // .then((result) => {
+      //   console.log(result);
+      // });
     },
   },
 

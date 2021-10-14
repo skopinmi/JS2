@@ -12,6 +12,38 @@ app.get('/catalog', (req, res) => {
   });
 });
 
+app.post('/addToCart', (req, res) => {
+    fs.readFile('cart.json', 'utf8', (err, data) => {
+      if (err) {
+        res.send('{"result": 0}');
+      } else {
+        const cart = JSON.parse(data);
+        const item = req.body;
+
+        
+        // проверка наличия товара в корзине перед добавлением
+        // 
+        // if (!(good.id_product in this.goodsInCart)){
+        //     this.goodsInCart[good.id_product] = {product: good, count: 1};
+        //   }else {
+        //     this.goodsInCart[good.id_product].count += 1;
+        //   }
+        //   console.log(this.goodsInCart);
+
+        cart.push(item);
+
+  
+        fs.writeFile('cart.json', JSON.stringify(cart), (err) => {
+          if (err) {
+            res.send('{"result": 0}');
+          } else {
+            res.send('{"result": 1}');
+          }
+        });
+      }
+    });
+  });
+
 app.listen(3000, function() {
   console.log('server is running on port 3000!');
 });
