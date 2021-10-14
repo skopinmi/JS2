@@ -1,6 +1,14 @@
 'use strict'
 
-// const { resolve } = require("path/posix");
+const postResponse = async (url, data) => {
+  return await fetch(url, {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
+}
 
 const API_URL = 'http://localhost:3000';
 // 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
@@ -33,34 +41,12 @@ const app = new Vue({
       xhr.send();
       }
     )},
-    makePOSTRequest(url, data) {
-      new Promise ((resolve) => {
-        let xhr;
-  
-      if (window.XMLHttpRequest) {
-        xhr = new XMLHttpRequest();
-      } else if (window.ActiveXObject) { 
-        xhr = new ActiveXObject("Microsoft.XMLHTTP");
-      }
-  
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4) {
-          resolve(xhr.responseText);
-        }
-      }
-  
-      xhr.open('POST', url, true);
-      xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-  
-      xhr.send(data);
-      });
-    },
 
     addToCart(good) {
-      this.makePOSTRequest(`${API_URL}/addToCart`, good);
-      // .then((result) => {
-      //   console.log(result);
-      // });
+      const item = {product: good, count: 1};
+      postResponse('/addToCart', item).then((result) => {
+        console.log(result);
+      });
     },
   },
 
@@ -143,7 +129,14 @@ Vue.component('cart', {
         </table>
       </div>
     </div>  
-  `
+  `,
+  methods: {
+    upDateCart(){
+      this.makeGETRequest(`${API_URL}/cart`).then( (goods) => {
+        this.goodsInCart = JSON.parse(goods);
+      });
+    }
+  }
 });
 
 Vue.component('goods-list', {
