@@ -50,6 +50,38 @@ app.post('/addToCart', (req, res) => {
     });
 });
 
+app.post('/deleteFromCart', (req, res) => {
+  fs.readFile('cart.json', 'utf8', (err, data) => {
+    if (err) {
+      res.send('{"result": 0}');
+    } else {
+      const cart = JSON.parse(data);
+      const item = req.body;
+
+      console.log(item);
+      // удаление
+      cart = cart.filter((element) =>{
+        if(element.product.product_name === item.product.product_name) {
+          element.count--;
+          if(element.count === 0) {
+            return false;
+          }
+        }
+        return true;
+      });
+
+        
+      fs.writeFile('cart.json', JSON.stringify(cart), (err) => {
+        if (err) {
+          res.send('{"result": 0}');
+        } else {
+          res.send('{"result": 1}');
+        }
+      });
+    }
+  });
+});
+
 app.listen(3000, function() {
   console.log('server is running on port 3000!');
 });

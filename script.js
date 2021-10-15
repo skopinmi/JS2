@@ -45,10 +45,19 @@ const app = new Vue({
     addToCart(good) {
       const item = {product: good, count: 1};
       postResponse('/addToCart', item).then((result) => {
-        console.log(this.goodsInCart);
+        console.log(result);
       });
-      this.upDateCart()
+      // this.upDateCart();
     },
+
+    deleteFromCart(good) {
+      const item = {product: good, count: 1};
+      postResponse('/deleteFromCart', item).then((result) => {
+        console.log(result);
+      });
+      // this.upDateCart();
+    },
+
     upDateCart(){
       this.makeGETRequest(`${API_URL}/cart`).then( (goods) => {
         this.goodsInCart = JSON.parse(goods);
@@ -61,6 +70,7 @@ const app = new Vue({
       this.goods = JSON.parse(goods);
       this.filteredGoods = JSON.parse(goods);
     });
+    this.upDateCart();
   }
 });
 
@@ -107,7 +117,7 @@ Vue.component('cart', {
   },
   template: `
     <div class="cart">
-      <button class="cart-button" type="button" @mouseover="isVisible = true" @mouseleave="isVisible = false">Корзина</button>
+      <button class="cart-button" type="button" v-on:click=changeVisible()>Корзина</button>
       <div  v-show="isVisible">
         <table>
           <thead>
@@ -116,6 +126,7 @@ Vue.component('cart', {
               <th>Количество</th>
               <th>Цена за шт.</th>
               <th>Итого</th>
+              <th>Действие</th>
             </tr>
           </thead>
           <tbody>
@@ -123,7 +134,8 @@ Vue.component('cart', {
               <td>{{item.product.product_name}}</td>
               <td>{{item.count}}</td>
               <td>{{item.product.price}}</td>
-              <td>{{item.count * item.product.price}}</td></tr>
+              <td>{{item.count * item.product.price}}</td>
+              <td><button type="button" v-on:click=$root.deleteFromCart(item)>-</button></td>
             </tr>
           </tbody>
         </table>
@@ -135,7 +147,12 @@ Vue.component('cart', {
         </table>
       </div>
     </div>  
-  `
+  `,
+  methods: {
+    changeVisible(){
+      this.isVisible = this.isVisible == false;
+    }
+  }
 });
 
 Vue.component('goods-list', {
