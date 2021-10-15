@@ -116,7 +116,8 @@ Vue.component('cart', {
   },
   template: `
     <div class="cart">
-      <button class="cart-button" type="button" v-on:click=changeVisible()>Корзина</button>
+      <button class="cart-button" type="button" v-on:click=changeVisible() v-show="isVisible">Скрыть корзину</button>
+      <button class="cart-button" type="button" v-on:click=changeVisible() v-show="!isVisible">Показать корзину</button>
       <div  v-show="isVisible">
         <table>
           <thead>
