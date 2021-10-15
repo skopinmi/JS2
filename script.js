@@ -47,15 +47,14 @@ const app = new Vue({
       postResponse('/addToCart', item).then((result) => {
         console.log(result);
       });
-      // this.upDateCart();
+      this.upDateCart();
     },
 
     deleteFromCart(good) {
-      const item = {product: good, count: 1};
-      postResponse('/deleteFromCart', item).then((result) => {
+      postResponse('/deleteFromCart', good).then((result) => {
         console.log(result);
       });
-      // this.upDateCart();
+      this.upDateCart();
     },
 
     upDateCart(){
@@ -135,7 +134,7 @@ Vue.component('cart', {
               <td>{{item.count}}</td>
               <td>{{item.product.price}}</td>
               <td>{{item.count * item.product.price}}</td>
-              <td><button type="button" v-on:click=$root.deleteFromCart(item)>-</button></td>
+              <td><button type="button" v-on:click=$root.deleteFromCart(item.product)>-</button></td>
             </tr>
           </tbody>
         </table>

@@ -55,13 +55,12 @@ app.post('/deleteFromCart', (req, res) => {
     if (err) {
       res.send('{"result": 0}');
     } else {
-      const cart = JSON.parse(data);
-      const item = req.body;
-
-      console.log(item);
+      let cart = JSON.parse(data);
+      const product = req.body;
+      console.log(product.product_name);
       // удаление
-      cart = cart.filter((element) =>{
-        if(element.product.product_name === item.product.product_name) {
+      cart = cart.filter((element) => {
+        if(element.product.product_name === product.product_name) {
           element.count--;
           if(element.count === 0) {
             return false;
