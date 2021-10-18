@@ -1,6 +1,16 @@
 'use strict'
 
-import Cart from 'cart.js';
+import cart  from './cart';
+import goodsSearch  from './goods-search';
+import goodsItem from './goods-item';
+import goodsList from './goods-list';
+import headerComponent from './header-component';
+
+Vue.component('cart', cart.cart);
+Vue.component('goods-search', goodsSearch.goodsSearch);
+Vue.component('goods-item', goodsItem.goodsItem);
+Vue.component('goods-list', goodsList.goodsList);
+Vue.component('header-component', headerComponent.headerComponent);
 
 const postResponse = async (url, data) => {
   return await fetch(url, {
@@ -22,9 +32,6 @@ const app = new Vue({
     filteredGoods: [],
     goodsInCart: [],
     totalPrice: 0,
-  },
-  components: {
-    'cart': Cart.cart
   },
   methods: {
     makeGETRequest(url) {
@@ -77,61 +84,3 @@ const app = new Vue({
     this.upDateCart();
   }
 });
-
-Vue.component('header-component', {
-  template: `
-    <div class="header-component"> 
-      <goods-search></goods-search>
-      <cart></cart>
-    </div>
-  `
-});
-
-Vue.component('goods-search', {
-  props: ['goods'],
-  date() {
-    return {
-      searchLine: ''
-    }
-  },
-  template: `
-    <div class="search">
-      <input type="text" class="goods-search" v-model="searchLine"/>
-      <button class="search-button" type="button" v-on:click=filterGoods()>Искать</button>  
-    </div>`,
-  data() {
-    return {
-      searchLine: '',
-    }
-  },  
-  methods: {
-    filterGoods() {
-      const regexp = new RegExp(this.searchLine, 'i');
-      this.$root.filteredGoods = this.$root.goods.filter(good => regexp.test(good.product_name));
-    }
-  } 
-});
-
-Vue.component('goods-list', {
-  props: ['goods'],
-  template: `
-    <div class="goods-list">
-      <goods-item v-for="good in goods" :good="good"></goods-item>
-    </div>
-  `
-});
-
-Vue.component('goods-item', {
-  props: ['good'],
-  template: `
-    <div class="goods-item">
-      <h3>{{ good.product_name }}</h3>
-      <p>{{ good.price }}</p>
-      <button id ="addToCart" v-on:click="$root.addToCart(good)" >Add to Cart</button></div>
-    </div>
-  `
-});
-
-
-
-

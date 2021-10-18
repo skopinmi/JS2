@@ -45,6 +45,7 @@ let cart = {
       }
     }
   };
-  export default {
+
+  export default  {
     cart: cart
-  };  
+  }
